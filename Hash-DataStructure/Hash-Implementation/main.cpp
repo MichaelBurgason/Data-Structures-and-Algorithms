@@ -5,6 +5,7 @@
 using namespace std;
 const int ARRAY_SIZE = 128;
 
+
 /* creating a class called hash node which will have two properties
 1. Key
 2. Value
@@ -15,7 +16,7 @@ public:
     int key;
     int value;
 
-    // creating a constructor to store key and value.
+    //creating the constructor
     HashNode(int key, int value) {
         this->key = key;
         this->value = value;
@@ -23,83 +24,83 @@ public:
 };
 
 class HashTable {
-    HashNode **arr; // declaring array of hash node
+    HashNode** arr;// declaring the array of the hash node
 public:
 
     HashTable() {
-        arr = new HashNode*[ARRAY_SIZE]; // creating array of hash node.
-        for(int i = 0; i < ARRAY_SIZE; i++) {
-            arr[i] = NULL;
+        arr = new HashNode * [ARRAY_SIZE]; // creating an array of hash nodes (128 nodes)
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            arr[i] = NULL;  //This ensures the memory is cleared, and doesnt have garbage from earlier use.
         }
     }
 
-    // creating a hash function(this is an example of open addressing)
+    //create a functiuon for interting the key, using open addressing
+protected:
     int hashFunction(int key) {
         return key % ARRAY_SIZE;
     }
-
-    // creating a function for inserting the key, value pair in hash table
+public:
+    //function for inserting an element. (this is where the actual "open addressing" takes place.)
     void insertElement(int key, int value) {
-        int h = hashFunction(key);
-        while(arr[h] != NULL && arr[h]->key != key) {
-            h = hashFunction(h + 1);
+        int location = hashFunction(key);
+        while (arr[location] != NULL && arr[location]->key != key) {
+            location = hashFunction(location + 1);
         }
-        if(arr[h] != NULL) {  // if the key is already present then delete the (key, value) pair
-            delete arr[h];
+        if (arr[location] != NULL) {
+            delete arr[location];
         }
-        arr[h] = new HashNode(key, value); // create a new (key, value) pair.
+        arr[location] = new HashNode(key, value);
     }
 
     int get(int key) {
-        int h = hashFunction(key);
-        while(arr[h] != NULL && arr[h]->key != key) {
-            h = hashFunction(h + 1);
+        int location = hashFunction(key);
+        while (arr[location] != NULL && arr[location]->key != key) {
+            location = hashFunction(location + 1);
         }
-        if(arr[h] == NULL) {
+        if (arr[location] == NULL) {
             return -1;
         }
-        return arr[h]->value;
+        return arr[location]->value;
     }
 
-    void removeValue(int key) {
-        int h = hashFunction(key);
-        if(arr[h] == NULL) {
-            cout<<"No Element Found"<<endl;
+
+    void removeElement(int key) {
+        int location = hashFunction(key);
+        if (arr[location] == NULL) {
+            cout << "No Element Found" << endl;
             return;
         }
-        while(arr[h] != NULL) {
-            if(arr[h]->key == key) {
+        while (arr[location] != NULL) {
+            if (arr[location]->key == key) {
                 break;
             }
-            h = hashFunction(h + 1);
+            location = hashFunction(location + 1);
         }
-        delete arr[h];
-
-        cout<<"Element deleted"<<endl;
-
+        delete arr[location];
+        cout << "Element Deleted" << endl;
     }
 
+
     void display() {
-        for(int i = 0; i < ARRAY_SIZE; i++) {
-            if(arr[i] != NULL && arr[i]->key != -1) {
-                cout<<arr[i]->key<<"----->"<<arr[i]->value<<endl;
+        for (int i = 0; i < ARRAY_SIZE; i++) {
+            if (arr[i] != NULL) {
+                cout << arr[i]->key << "--->" << arr[i]->value << endl;
             }
         }
     }
-
 };
 
 int main() {
     HashTable h;
-    h.insertElement(1,1);
-    h.insertElement(2,2);
-    h.insertElement(2,3);
-    h.insertElement(2,8);  // note then when displayed the value of key->2 should be only 8.
-    h.insertElement(12,21);
+    h.insertElement(1, 1);
+    h.insertElement(2, 2);
+    h.insertElement(2, 3);
+    h.insertElement(2, 8);  // note then when displayed the value of key->2 should be only 8.
+    h.insertElement(12, 21);
 
     h.display();
 
-    cout<<h.get(2);
+    cout << h.get(2);
 
     return 0;
 

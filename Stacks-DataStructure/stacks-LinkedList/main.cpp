@@ -5,37 +5,34 @@ The functions that will be used for implementing stack are:
 3. display()
 */
 
-#include <iostream>
-#include <cstdlib>
-
+#include <bits/stdc++.h>
 using namespace std;
-// creating a class node that defines it.
-class Node
-{
+
+
+
+//creating a node class to start the Linked list implimentation
+class Node {
 public:
     int data;
-    Node *next;
-    Node(int data)
-    {
+    Node* next;
+
+    Node(int data) {
         this->data = data;
-        this->next = NULL; // it should be initialized as NULL, unless it occurs SIGSEGV error.
+        this->next = NULL;
     }
+
 };
 
-class Stack
-{
-    Node *top; // declaring two pointers head and tail of class Node.
+class Stack {
+    Node* top;
 public:
-    Stack()
-    {
+    Stack() {
         top = NULL;
     }
 
-    void push(int data)
-    {
-        Node *newNode = new Node(data);
-        if (top == NULL)
-        {
+    void push(int data) {
+        Node* newNode = new Node(data);
+        if (top == NULL) {
             top = newNode;
             return;
         }
@@ -43,33 +40,32 @@ public:
         top = newNode;
     }
 
-    void pop()
-    {
-        if (top == NULL)
-        {
-            cout << "Stack Under-Flow or Empty" << endl;
-            return;
+    int pop() {
+        if (top == NULL) {
+            cout << "sorry, there is nothing to pop" << endl;
+            return NULL;
         }
-        Node *curr = top;
-        cout << top->data << endl;
-        top = top->next;
-        free(curr);
+        int value = top->data; // grab calue of top
+        Node* current = top; //grab current top so it can be cleared from memory
+        top = top->next; // set old top next to new top
+        delete(current);
+
+        return value;
     }
-    void display()
-    {
-        if (top == NULL)
-        {
-            cout << "Empty Stack Please push elements" << endl;
+
+    void display() {
+        if (top == NULL) {
+            cout << "underflow? empty stack?" << endl;
             return;
         }
-        Node *temp = top;
-        while (temp != NULL)
-        {
-            cout << temp->data << "  ";
+        Node* temp = top;
+        for (int i = 0; temp != NULL; i++) {
+            cout << top->data << endl;
             temp = temp->next;
         }
-        cout << endl;
+        delete(temp);
     }
+
 };
 
 int main()
@@ -79,7 +75,7 @@ int main()
     s.push(20);
     s.push(30);
 
-    s.pop(); //removes 30
+    cout << s.pop() << endl; //removes 30
     s.display();
 
     return 0;

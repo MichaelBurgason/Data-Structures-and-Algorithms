@@ -12,13 +12,14 @@
 
  */
 
- #include <bits/stdc++.h>
- using namespace std;
+#include <bits/stdc++.h>
+using namespace std;
+// THIS IS A VECOR IN C++
 
- class DynamicArray {
-    int *arr; //creating array pointer
-    int capacity; // holds the actual size of the array.
-    int totalNumbers; // hold the total number of elements present in array.
+class DynamicArray {
+    int* arr; // creates the array pointer
+    int capacity;
+    int totalNumbers;
 
 public:
     DynamicArray() {
@@ -28,36 +29,36 @@ public:
     }
 
     void push(int data) {
-        if(totalNumbers == capacity) {
-            // check for end case when initially array is filled with assigned capacity
-            int *temp = new int[2 * capacity];
-            for(int i = 0; i < capacity; i++) {
-                temp[i] = arr[i];   //copy array elements in new array -> temp
+        if (totalNumbers == capacity) { // time complexity of O(1)
+            int* tempArr = new int[2 * capacity];
+            for (int i = 0; i < capacity; i++) {
+                tempArr[i] = arr[i]; // copies the current elements into a new vector
+                // (dynamic array)
             }
-            delete[] arr; //delete memory allocated for older array
+            delete[] arr; // deletes memory for arr
             capacity = capacity * 2;
-            arr = temp; // pointing our arr to newly allocated memory
+            arr = tempArr;
         }
-        arr[totalNumbers] = data; //inserting data.
+        arr[totalNumbers] = data;
         totalNumbers++;
     }
 
-    void push(int data, int index) {
-        // in this function we replace the number which is already present in that index.
-        if(index == capacity) {
-            push(data); // checking for end case.
+    void replace(int data, int index) { // time complexity of O(1)
+        // replace the data at a certin index
+        if (index == capacity) {
+            push(data); // check for an end case
         }
         else {
-            arr[index] = data; // insert data
+            arr[index] = data; // insert data if not an endcase
         }
     }
 
-    void insertElement(int data, int index) {
-        // in this function we don't replace the original number
-        if(index == capacity) {
+    void insert(int data, int index) {
+        //in this we slot the number in, and shift the others
+        if (index == capacity) {
             push(data);
         }
-        for(int i = totalNumbers; i > index; i--) {
+        for (int i = totalNumbers; i > index; i--) {
             arr[i] = arr[i - 1];
         }
         arr[index] = data;
@@ -65,63 +66,58 @@ public:
     }
 
     int pop() {
-        // return number at the end of array and reduces the size of array.
-        int ele = arr[totalNumbers-1];
+        //returns number at end of array, and reduces it's size
+        int element = arr[totalNumbers - 1];
         totalNumbers--;
-        return ele;
+        return element;
     }
-
-    void pop(int index) {
-        // deleting element from particular index
-        if(index > -1 && index < totalNumbers) {
+    void erase(int index) {
+        if (index > -1 && index < totalNumbers) {
             totalNumbers--;
-            for(int j = index; j < totalNumbers; j++) {
+            for (int j = index; j < totalNumbers; j++) {
                 arr[j] = arr[j + 1];
             }
+
         }
     }
-
     int get(int index) {
-        // get the data of the particular index.
-        if(index > -1 && index < totalNumbers) {
+        if (index > -1 && index < totalNumbers) {
             return arr[index];
         }
     }
-
     int length() {
-        // get the size of array.
         return totalNumbers;
     }
-
     void print() {
-        for(int i = 0; i < totalNumbers; i++) {
-            cout<<arr[i]<<"  ";
+        for (int i = 0; i < totalNumbers; i++) {
+            cout << arr[i] << " ";
         }
-        cout<<endl;
+        cout << endl;
     }
-    // end of class
- };
+};
 
- int main() {
-    DynamicArray a; // creating instance of the class.
-    a.push(10);
-    a.push(20);
-    a.push(30);
-    a.push(40);
-    a.insertElement(50, 2);
-    cout<<"The array is: ";
-    a.print();
+int main() {
+    DynamicArray vectorArr;
+    vectorArr.push(10);
+    vectorArr.push(20);
+    vectorArr.push(30);
+    vectorArr.push(40);
+    vectorArr.insert(50, 2);
+    cout << "The Array is: ";
+    vectorArr.print();
 
-    int ele = a.pop();// removing last element
-    cout<<"Element Deleted: "<<ele<<endl;
-    cout<<"The array after deletion is: ";
-    a.print();
+    int element = vectorArr.pop();
+    cout << "Element Deleted: " << element << endl;
+    cout << "The array after deletion is: ";
+    vectorArr.print();
 
-    a.pop(0);
-    cout<<"The array after deleting index-0 element: ";
-    a.print();
+    vectorArr.erase(0);
+    cout << "The array after deleting index-0 element: ";
+    vectorArr.print();
 
-    cout<<"The size of array is: "<<a.length()<<endl;
+    cout << "The size of array is: " << vectorArr.length() << endl;
 
+    cout << "The memory address is: " << *vectorArr << endl;
     return 0;
- }
+
+}
